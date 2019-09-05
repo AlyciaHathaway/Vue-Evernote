@@ -1,5 +1,6 @@
 <template>
     <div id="sidebar">
+        <avatar></avatar>
         <div class="icons">
             <router-link to="/notedetail/1"><g-icon class="icon" name="notedetail"></g-icon></router-link>
             <router-link to="/notebook"><g-icon class="icon" name="notebook"></g-icon></router-link>
@@ -13,10 +14,13 @@
 
 <script>
 import icon from '@/components/Icon'
+import avatar from '@/components/Avatar'
+
 export default {
     name: 'Sidebar',
     components: {
-        'g-icon': icon
+        'g-icon': icon,
+        avatar
     },
     data() {
         return {

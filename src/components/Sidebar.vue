@@ -2,8 +2,8 @@
     <div id="sidebar">
         <div class="icons">
             <router-link to="/notedetail/1"><g-icon class="icon" name="notedetail"></g-icon></router-link>
-            <router-link to="/notedetail/1"><g-icon class="icon" name="notebook"></g-icon></router-link>
-            <router-link to="/notedetail/1"><g-icon class="icon" name="trash"></g-icon></router-link>
+            <router-link to="/notebook"><g-icon class="icon" name="notebook"></g-icon></router-link>
+            <router-link to="/trash/1"><g-icon class="icon" name="trash"></g-icon></router-link>
         </div>
         <div class="logout" @click="onLogout">
             <g-icon class="icon" name="logout"></g-icon>
@@ -12,14 +12,19 @@
 </template>
 
 <script>
-import Icon from '@/components/icon'
+import icon from '@/components/Icon'
 export default {
     name: 'Sidebar',
     components: {
-        'g-icon': Icon
+        'g-icon': icon
     },
     data() {
         return {
+
+        }
+    },
+    methods: {
+        onLogout() {
 
         }
     }

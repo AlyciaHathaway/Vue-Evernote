@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import request from '@/helpers/request'
+
 export default {
 	name: 'Login',
 	data() {

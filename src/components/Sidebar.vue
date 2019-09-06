@@ -6,7 +6,7 @@
             <router-link to="/notebook"><g-icon class="icon" name="notebook"></g-icon></router-link>
             <router-link to="/trash/1"><g-icon class="icon" name="trash"></g-icon></router-link>
         </div>
-        <div class="logout" @click="onLogout">
+        <div class="logout" @click="logout">
             <g-icon class="icon" name="logout"></g-icon>
         </div>
     </div>
@@ -15,6 +15,7 @@
 <script>
 import icon from '@/components/Icon'
 import avatar from '@/components/Avatar'
+import request from '@/helpers/request'
 
 export default {
     name: 'Sidebar',
@@ -28,8 +29,11 @@ export default {
         }
     },
     methods: {
-        onLogout() {
-
+        logout() {
+            request('auth/logout')
+                .then(data => {
+                    console.log(data)
+                })
         }
     }
 }

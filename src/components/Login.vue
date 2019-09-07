@@ -7,15 +7,15 @@
 					<div class="form">
 						<h3 @click="showRegister">创建账户</h3>
                         <div :class="{show: isShowRegister}" class="register">
-                            <input type="text" v-model="register.username" placeholder="请输入用户名" />
-                            <input type="password" v-model="register.password" placeholder="密码" />
+                            <input type="text" @keyup.enter="onRegister" v-model="register.username" placeholder="请输入用户名" />
+                            <input type="password" @keyup.enter="onRegister" v-model="register.password" placeholder="密码" />
                             <p :class="{error: register.isError}"> {{register.notice}}</p>
                             <div class="button" @click="onRegister">创建账号</div>
                         </div>
 						<h3 @click="showLogin">登录</h3>
                         <div :class="{show: isShowLogin}" class="login">
-                            <input type="text" v-model="login.username" placeholder="请输入用户名" />
-                            <input type="password" v-model="login.password" placeholder="密码" />
+                            <input type="text" @keyup.enter="onLogin" v-model="login.username" placeholder="请输入用户名" />
+                            <input type="password" @keyup.enter="onLogin" v-model="login.password" placeholder="密码" />
                             <p :class="{error: login.isError}"> {{login.notice}}</p>
                             <div class="button" @click="onLogin">登录</div>
                         </div>

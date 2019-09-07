@@ -5,12 +5,16 @@
 </template>
 
 <script>
+import Bus from '@/helpers/eventBus'
 export default {
     name: 'NoteDetail',
     data() {
         return {
             message: '笔记详情页'
         }
+    },
+    created() {
+        Bus.$emit('checkRouterAuth')
     }
 }
 </script>

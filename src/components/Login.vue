@@ -25,11 +25,6 @@
 import Auth from '@/apis/auth'
 import Bus from '@/helpers/eventBus'
 
-Auth.getInfo()
-    .then(data => {
-        console.log(data)
-    })
-
 export default {
 	name: 'Login',
 	data() {
@@ -80,7 +75,7 @@ export default {
                 this.form.isError = false
                 this.form.notice = ''
                 Bus.$emit('userInfo', {username: this.form.username})
-                this.$router.push({path: 'notebook'})
+                this.$router.push({path: '/notebook'})
             }).catch(error => {
                 this.form.isError = true
 			    this.form.notice = error.msg

@@ -7,10 +7,31 @@
 
 <script>
 import sidebar from '@/components/Sidebar.vue'
+import Auth from '@/apis/auth'
+import Bus from '@/helpers/eventBus'
+
 export default {
 	name: 'App',
 	components: {
 		sidebar
+	},
+	created() {
+		Bus.$on('checkRouterAuth', () => {
+			this.checkRouterAuth()
+		})
+	},
+	methods: {
+		checkRouterAuth() {
+			Auth.getInfo().then(response => {
+				if (!response.isLogin) {
+					let { path } = this.$router.history.current
+					if (path !== '/login') {
+						console.log(111111)
+						this.$router.push({ path: '/login' })
+					}
+				}
+			})
+		}
 	}
 }
 </script>
@@ -22,7 +43,9 @@ export default {
 	padding: 0;
 }
 
-html, body, #app {
+html,
+body,
+#app {
 	height: 100%;
 }
 
@@ -39,7 +62,8 @@ body {
 			text-decoration: none;
 			color: #444;
 		}
-		ul, li {
+		ul,
+		li {
 			list-style: none;
 		}
 	}

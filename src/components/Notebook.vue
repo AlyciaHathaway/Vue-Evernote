@@ -9,12 +9,16 @@
 </template>
 
 <script>
+import Bus from '@/helpers/eventBus'
 export default {
     name: 'Notebook',
     data() {
         return {
             message: '笔记本列表'
         }
+    },
+    created() {
+        Bus.$emit('checkRouterAuth')
     }
 }
 </script>

@@ -28,6 +28,7 @@
 
 <script>
 import Auth from '@/apis/auth'
+import Bus from '@/helpers/eventBus'
 
 Auth.getInfo()
     .then(data => {
@@ -81,7 +82,8 @@ export default {
                 password: this.register.password
             }).then(data => {
                 this.register.isError = false
-			    this.register.notice = ''
+                this.register.notice = ''
+                Bus.$emit('userInfo', {username: this.login.username})
                 this.$router.push({path: 'notebook'})
             }).catch(error => {
                 this.register.isError = true
@@ -105,7 +107,8 @@ export default {
                 password: this.login.password
             }).then(data => {
                 this.login.isError = false
-			    this.login.notice = ''
+                this.login.notice = ''
+                Bus.$emit('userInfo', {username: this.login.username})
                 this.$router.push({path: 'notebook'})
             }).catch(error => {
                 this.login.isError = true

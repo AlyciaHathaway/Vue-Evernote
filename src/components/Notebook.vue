@@ -1,32 +1,33 @@
 <template>
-    <div id="notebook">
-        <h1>{{message}}</h1>
-        <ul>
-            <li><router-link to="/notedetail/1">笔记本1</router-link></li>
-            <li><router-link to="/notedetail/2">笔记本2</router-link></li>
-        </ul>
-    </div>
+	<div id="notebook">
+		<h1>{{message}}</h1>
+		<ul>
+			<li>
+				<router-link to="/notedetail/1">笔记本1</router-link>
+			</li>
+			<li>
+				<router-link to="/notedetail/2">笔记本2</router-link>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
-import Bus from '@/helpers/eventBus'
 export default {
-    name: 'Notebook',
-    data() {
-        return {
-            message: '笔记本列表'
-        }
-    },
-    created() {
-        Bus.$emit('checkRouterAuth')
-    }
+	name: 'Notebook',
+	data() {
+		return {
+			message: '笔记本列表'
+		}
+	},
+	created() {}
 }
 </script>
 
 <style lang="scss" scoped>
-    #notebook {
-        h1 {
-            color: red;
-        }
-    }
+#notebook {
+	h1 {
+		color: red;
+	}
+}
 </style>

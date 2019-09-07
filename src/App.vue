@@ -8,7 +8,6 @@
 <script>
 import sidebar from '@/components/Sidebar.vue'
 import Auth from '@/apis/auth'
-import Bus from '@/helpers/eventBus'
 
 export default {
 	name: 'App',
@@ -16,9 +15,9 @@ export default {
 		sidebar
 	},
 	created() {
-		Bus.$on('checkRouterAuth', () => {
-			this.checkRouterAuth()
-		})
+        window.addEventListener('hashchange', () => {
+            this.checkRouterAuth()
+        })
 	},
 	methods: {
 		checkRouterAuth() {
@@ -26,7 +25,6 @@ export default {
 				if (!response.isLogin) {
 					let { path } = this.$router.history.current
 					if (path !== '/login') {
-						console.log(111111)
 						this.$router.push({ path: '/login' })
 					}
 				}

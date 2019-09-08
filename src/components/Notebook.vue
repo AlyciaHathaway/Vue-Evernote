@@ -13,9 +13,9 @@
                             <p>{{note.title}}</p>
                         </div>
                         <div class="operation">
+                            <p>{{note.dateFormat}}</p>
                             <p @click.stop.prevent="onEdit(note)">编辑</p>
                             <p @click.stop.prevent="onDelete(note)">删除</p>
-                            <p>3天前</p>
                         </div>
                     </router-link>
                 </div>
@@ -27,6 +27,7 @@
 <script>
 import icon from '@/components/Icon'
 import Notebook from '@/apis/notebook'
+import { dateFormat } from '@/helpers/util'
 
 export default {
     name: 'Notebook',
@@ -58,6 +59,7 @@ export default {
                 Notebook.addNote({
                     title
                 }).then(response => {
+                    response.data.dateFormat = dateFormat(response.data.createdAt)
                     this.noteList.unshift(response.data)
                 })
             }

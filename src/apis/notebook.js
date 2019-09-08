@@ -11,13 +11,13 @@ export default {
     getAll() {
         return request(URL.GET)
     },
-    updateNotebook(notebookID, { title = '' } = { title: '' }) {
-        return request(URL.UPDATE.replace(':id', notebookID), 'PATCH', { title })
+    updateNote(noteID, { title = '' } = { title: '' }) {
+        return request(URL.UPDATE.replace(':id', noteID), 'PATCH', { title })
     },
-    deleteNotebook(notebookID) {
-        return request(URL.DELETE.replace(':id', notebookID), 'DELETE')
+    deleteNote(noteID) {
+        return request(URL.DELETE.replace(':id', noteID), 'DELETE')
     },
-    addNotebook({ title = '' } = { title: '' }) {
+    addNote({ title = '' } = { title: '' }) {
         return request(URL.ADD, 'POST', { title })
     }
 }

@@ -1,23 +1,23 @@
 <template>
 	<div class="detail" id="notebook">
 		<header>
-            <a href="#" class="button">新建笔记</a>
+            <a class="button" href="#" @click.prevent="onCreate">新建笔记</a>
         </header>
         <main>
             <div class="layout">
-                <h2>笔记列表(10)</h2>
+                <h2>笔记列表({{noteList.length}})</h2>
                 <div class="note-list">
-                    <a href="#" class="note">
+                    <router-link class="note" v-for="(note, index) in noteList" :key="index" to="/notedetail/1">
                         <div class="title">
                             <g-icon class="icon" name="notedetail"></g-icon>
-                            <p>标题</p>
+                            <p>{{note.title}}</p>
                         </div>
                         <div class="operation">
-                            <p>编辑</p>
-                            <p>删除</p>
+                            <p @click.stop.prevent="onEdit(note)">编辑</p>
+                            <p @click.stop.prevent="onDelete(note)">删除</p>
                             <p>3天前</p>
                         </div>
-                    </a>
+                    </router-link>
                 </div>
             </div>
         </main>
@@ -26,7 +26,7 @@
 
 <script>
 import icon from '@/components/Icon'
-import Auth from '@/apis/auth'
+import Notebook from '@/apis/notebook'
 
 export default {
     name: 'Notebook',
@@ -35,10 +35,52 @@ export default {
     },
 	data() {
 		return {
-			message: '笔记本列表'
+			noteList: []
 		}
 	},
-	created() {}
+	created() {
+        this.getNoteList()
+    },
+    methods: {
+        getNoteList() {
+            Notebook.getAll()
+                .then(response => {
+                    console.log(response)
+                    this.noteList = response.data
+                })
+        },
+        onCreate() {
+            let title = window.prompt('创建第一条笔记')
+            if (title.trim() === '') {
+                alert('笔记标题不能为空')
+                return
+            }else {
+                Notebook.addNote({
+                    title
+                }).then(response => {
+                    this.noteList.unshift(response.data)
+                })
+            }
+        },
+        onEdit(note) {
+            let title = window.prompt('修改标题', note.title)
+            Notebook.updateNote(note.id, {title})
+                .then(response => {
+                    alert(response.msg)
+                    note.title = title
+                })
+        },
+        onDelete(note) {
+            let isConfirm = window.confirm('你确定要删除吗？')
+            if (isConfirm) {
+                Notebook.deleteNote(note.id)
+                    .then(response => {
+                        this.noteList.splice(this.noteList.indexOf(note), 1)
+                        alert(response.msg)
+                    })
+            }
+        }
+    }
 }
 </script>
 

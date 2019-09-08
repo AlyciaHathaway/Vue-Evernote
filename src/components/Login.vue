@@ -85,7 +85,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .modal-mask {
 	position: fixed;
 	z-index: 100;
@@ -175,14 +175,14 @@ export default {
 				color: red;
 			}
             .button {
-                background-color: #2bb964;
                 height: 36px;
-                line-height: 36px;
-                text-align: center;
-                font-weight: bold;
-                color: #fff;
-                border-radius: 4px;
                 margin-top: 18px;
+                line-height: 36px;
+                border-radius: 4px;
+                text-align: center;
+                font-weight: 500;
+                color: #fff;
+                background-color: #2bb964;
                 cursor: pointer;
             }
 		}

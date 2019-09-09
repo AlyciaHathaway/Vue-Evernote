@@ -61,10 +61,7 @@ export default {
             }).then(response => {
                 response.data.dateFormat = dateFormat(response.data.createdAt)
                 this.noteList.unshift(response.data)
-                this.$message({
-                    type: 'success',
-                    message: response.msg
-                })
+                this.$message.success(response.msg)
             })
         },
         onEdit(note) {
@@ -80,10 +77,7 @@ export default {
                 return Notebook.updateNote(note.id, {title})
             }).then(response => {
                 note.title = title
-                this.$message({
-                    type: 'success',
-                    message: response.msg
-                })
+                this.$message.success(response.msg)
             })
         },
         onDelete(note) {
@@ -95,10 +89,7 @@ export default {
                 return Notebook.deleteNote(note.id)
             }).then(response => {
                 this.noteList.splice(this.noteList.indexOf(note), 1)
-                this.$message({
-                    type: 'success',
-                    message: response.msg
-                })
+                this.$message.success(response.msg)
             })
         }
     }

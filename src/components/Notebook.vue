@@ -7,7 +7,7 @@
             <div class="layout">
                 <h2>笔记列表({{noteList.length}})</h2>
                 <div class="note-list">
-                    <router-link class="note" v-for="(note, index) in noteList" :key="index" to="/notedetail/1">
+                    <router-link class="note" v-for="(note, index) in noteList" :key="index" :to="`/notedetail/?notebookID=${note.id}`">
                         <div class="title">
                             <g-icon class="icon" name="notedetail"></g-icon>
                             <p>{{note.title}}</p>

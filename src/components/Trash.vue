@@ -1,6 +1,6 @@
 <template>
 	<div id="trash">
-		<h1>{{message}}</h1>
+		<h1>notebookID: {{$route.query.notebookID}}</h1>
 	</div>
 </template>
 

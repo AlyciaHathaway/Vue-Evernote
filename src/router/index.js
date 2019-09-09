@@ -26,7 +26,7 @@ export default new Router({
       component: Notebook
     },
     {
-      path: '/notedetail/:noteID',
+      path: '/notedetail',
       name: 'NoteDetail',
       component: NoteDetail
     },

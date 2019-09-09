@@ -2,9 +2,9 @@
     <div id="sidebar">
         <avatar></avatar>
         <div class="icons">
-            <router-link to="/notedetail/1"><g-icon class="icon" name="notedetail"></g-icon></router-link>
+            <router-link to="/notedetail"><g-icon class="icon" name="notedetail"></g-icon></router-link>
             <router-link to="/notebook"><g-icon class="icon" name="notebook"></g-icon></router-link>
-            <router-link to="/trash/1"><g-icon class="icon" name="trash"></g-icon></router-link>
+            <router-link to="/trash"><g-icon class="icon" name="trash"></g-icon></router-link>
         </div>
         <div class="logout" @click="logout">
             <g-icon class="icon" name="logout"></g-icon>

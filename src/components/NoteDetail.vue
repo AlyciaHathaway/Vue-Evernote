@@ -1,6 +1,7 @@
 <template>
 	<div id="note-detail">
-		<h1>{{message}}: {{$route.params.noteID}}</h1>
+		<h1>notebookID: {{$route.query.notebookID}}</h1>
+        <h1>pageID: {{$route.query.pageID}}</h1>
 	</div>
 </template>
 

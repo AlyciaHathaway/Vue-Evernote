@@ -51,36 +51,55 @@ export default {
                 })
         },
         onCreate() {
-            let title = window.prompt('创建第一条笔记')
-            if (title.trim() === '') {
-                alert('笔记标题不能为空')
-                return
-            }else {
-                Notebook.addNote({
-                    title
-                }).then(response => {
-                    response.data.dateFormat = dateFormat(response.data.createdAt)
-                    this.noteList.unshift(response.data)
+            this.$prompt('请输入标题', '创建笔记', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputPattern: /^.{1,30}$/,
+                inputErrorMessage: '标题不能为空，且不超过30个字符'
+            }).then(({ value }) => {
+                return Notebook.addNote({title: value})
+            }).then(response => {
+                response.data.dateFormat = dateFormat(response.data.createdAt)
+                this.noteList.unshift(response.data)
+                this.$message({
+                    type: 'success',
+                    message: response.msg
                 })
-            }
+            })
         },
         onEdit(note) {
-            let title = window.prompt('修改标题', note.title)
-            Notebook.updateNote(note.id, {title})
-                .then(response => {
-                    alert(response.msg)
-                    note.title = title
+            let title = ''
+            this.$prompt('请重命名标题', '修改笔记', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                inputValue: note.title,
+                inputPattern: /^.{1,30}$/,
+                inputErrorMessage: '标题不能为空，且不超过30个字符'
+            }).then(({ value }) => {
+                title = value
+                return Notebook.updateNote(note.id, {title})
+            }).then(response => {
+                note.title = title
+                this.$message({
+                    type: 'success',
+                    message: response.msg
                 })
+            })
         },
         onDelete(note) {
-            let isConfirm = window.confirm('你确定要删除吗？')
-            if (isConfirm) {
-                Notebook.deleteNote(note.id)
-                    .then(response => {
-                        this.noteList.splice(this.noteList.indexOf(note), 1)
-                        alert(response.msg)
-                    })
-            }
+            this.$confirm('你确定要删除笔记吗？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                return Notebook.deleteNote(note.id)
+            }).then(response => {
+                this.noteList.splice(this.noteList.indexOf(note), 1)
+                this.$message({
+                    type: 'success',
+                    message: response.msg
+                })
+            })
         }
     }
 }

@@ -1,21 +1,21 @@
 <template>
-	<div class="detail" id="notebook">
+	<div class="detail" id="notebooks">
 		<header>
             <a class="button" href="#" @click.prevent="onCreate">新建笔记</a>
         </header>
         <main>
             <div class="layout">
-                <h2>笔记列表({{noteList.length}})</h2>
-                <div class="note-list">
-                    <router-link class="note" v-for="(note, index) in noteList" :key="index" :to="`/notedetail/?notebookID=${note.id}`">
+                <h2>笔记列表({{notebookList.length}})</h2>
+                <div class="notebook-list">
+                    <router-link class="notebook" v-for="(notebook, index) in notebookList" :key="index" :to="`/notedetail/?notebookID=${notebook.id}`">
                         <div class="title">
                             <g-icon class="icon" name="notedetail"></g-icon>
-                            <p>{{note.title}}</p>
+                            <p>{{notebook.title}}</p>
                         </div>
                         <div class="operation">
-                            <p>{{note.dateFormat}}</p>
-                            <p @click.stop.prevent="onEdit(note)">编辑</p>
-                            <p @click.stop.prevent="onDelete(note)">删除</p>
+                            <p>{{notebook.dateFormat}}</p>
+                            <p @click.stop.prevent="onEdit(notebook)">编辑</p>
+                            <p @click.stop.prevent="onDelete(notebook)">删除</p>
                         </div>
                     </router-link>
                 </div>
@@ -30,24 +30,24 @@ import Notebook from '@/apis/notebook'
 import { dateFormat } from '@/helpers/util'
 
 export default {
-    name: 'Notebook',
+    name: 'Notebooks',
     components: {
         'g-icon': icon
     },
 	data() {
 		return {
-			noteList: []
+			notebookList: []
 		}
 	},
 	created() {
-        this.getNoteList()
+        this.getnotebookList()
     },
     methods: {
-        getNoteList() {
+        getnotebookList() {
             Notebook.getAll()
                 .then(response => {
                     console.log(response)
-                    this.noteList = response.data
+                    this.notebookList = response.data
                 })
         },
         onCreate() {
@@ -60,35 +60,35 @@ export default {
                 return Notebook.addNote({title: value})
             }).then(response => {
                 response.data.dateFormat = dateFormat(response.data.createdAt)
-                this.noteList.unshift(response.data)
+                this.notebookList.unshift(response.data)
                 this.$message.success(response.msg)
             })
         },
-        onEdit(note) {
+        onEdit(notebook) {
             let title = ''
             this.$prompt('请重命名标题', '修改笔记', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
-                inputValue: note.title,
+                inputValue: notebook.title,
                 inputPattern: /^.{1,30}$/,
                 inputErrorMessage: '标题不能为空，且不超过30个字符'
             }).then(({ value }) => {
                 title = value
-                return Notebook.updateNote(note.id, {title})
+                return Notebook.updateNote(notebook.id, {title})
             }).then(response => {
-                note.title = title
+                notebook.title = title
                 this.$message.success(response.msg)
             })
         },
-        onDelete(note) {
+        onDelete(notebook) {
             this.$confirm('你确定要删除笔记吗？', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                return Notebook.deleteNote(note.id)
+                return Notebook.deleteNote(notebook.id)
             }).then(response => {
-                this.noteList.splice(this.noteList.indexOf(note), 1)
+                this.notebookList.splice(this.notebookList.indexOf(notebook), 1)
                 this.$message.success(response.msg)
             })
         }
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#notebook {
+#notebooks {
 	flex: 1;
     header {
         padding: 12px;
@@ -105,12 +105,9 @@ export default {
         .button {
             margin-left: 10px;
             padding: 4px 8px;
-            border-radius: 4px;
-            box-shadow: 0 0 2px 0 #ccc;
             font-size: 12px;
             background-color: #fff;
             color: #666;
-            cursor: pointer;
         }
     }
     main {
@@ -122,14 +119,14 @@ export default {
                 font-size: 16px;
                 color: #000;
             }
-            .note-list {
+            .notebook-list {
                 margin-top: 10px;
                 border-radius: 4px;
                 font-size: 14px;
                 font-weight: 500;
                 color: #666;
                 background-color: #fff;
-                .note {
+                .notebook {
                     display: flex;
                     align-items: center;
                     justify-content: space-between;

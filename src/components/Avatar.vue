@@ -21,6 +21,11 @@ export default {
                 console.log(response)
                 if (response.isLogin) {
                     this.username = response.data.username
+                }else {
+                    let { path } = this.$router.history.current
+					if (path !== '/login') {
+						this.$router.push({ path: '/login' })
+					}
                 }
             })
     },

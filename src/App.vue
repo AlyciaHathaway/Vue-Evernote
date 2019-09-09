@@ -60,6 +60,11 @@ body {
 			text-decoration: none;
 			color: #444;
 		}
+        .button {
+            border-radius: 4px;
+            box-shadow: 0 0 2px 0 #ccc;
+            cursor: pointer;
+        }
 		ul,
 		li {
 			list-style: none;

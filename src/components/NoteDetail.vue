@@ -1,13 +1,21 @@
 <template>
-	<div id="note-detail">
-		<h1>notebookID: {{$route.query.notebookID}}</h1>
-        <h1>pageID: {{$route.query.pageID}}</h1>
-	</div>
+    <div class="detail" id="notebook">
+        <note-sidebar></note-sidebar>
+        <div class="note-detail">
+            <h1>notebookID: {{$route.query.notebookID}}</h1>
+            <h1>pageID: {{$route.query.pageID}}</h1>
+        </div>
+    </div>
 </template>
 
 <script>
+import NoteSidebar from '@/components/NoteSidebar'
+
 export default {
-	name: 'NoteDetail',
+    name: 'Notebook',
+    components: {
+        NoteSidebar
+    },
 	data() {
 		return {
 			message: '笔记详情页'
@@ -18,9 +26,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#note-detail {
-	h1 {
-		color: rgb(191, 191, 199);
-	}
+#notebook {
+    display: flex;
+    align-items: stretch;
+    background-color: #fff;
+    flex: 1;
+    .note-detail {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+    }
 }
 </style>

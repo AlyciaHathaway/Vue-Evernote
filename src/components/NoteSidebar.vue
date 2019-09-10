@@ -12,7 +12,7 @@
 					:key="index"
 					:command="notebook.id"
 				>{{notebook.title}}</el-dropdown-item>
-				<el-dropdown-item command="trash">回收站</el-dropdown-item>
+				<el-dropdown-item command="trash" divided>回收站</el-dropdown-item>
 			</el-dropdown-menu>
 		</el-dropdown>
 
@@ -24,7 +24,7 @@
 		<ul class="notes">
 			<li v-for="(note, index) in noteList" :key="index">
 				<router-link :to="`/note?noteID=${note.id}`">
-					<span class="date">{{note.updateDateFormat}}</span>
+					<span class="date">{{note.updatedAtDate}}</span>
 					<span class="title">{{note.title}}</span>
 				</router-link>
 			</li>
@@ -33,8 +33,17 @@
 </template>
 
 <script>
+import Notebook from '@/apis/notebook'
+import Note from '@/apis/notedetail'
+
 export default {
-	name: 'NoteSidebar',
+    name: 'NoteSidebar',
+    created() {
+        Notebook.getAll()
+            .then(response => {
+                this.notebookList = response.data
+            })
+    },
 	data() {
 		return {
 			notebookList: [],
@@ -42,7 +51,14 @@ export default {
 		}
 	},
 	methods: {
-		handleCommand() {}
+		handleCommand(notebookID) {
+            if (notebookID !== 'trash') {
+                Note.getAll({notebookID})
+                    .then(response => {
+                        this.noteList = response.data
+                    })
+            }
+        }
 	}
 }
 </script>

@@ -70,6 +70,10 @@ export default {
         },
 		handleCommand(notebookID) {
             if (notebookID !== 'trash') {
+                this.$router.push({
+                    path: '/notedetail',
+                    query: {notebookID}
+                })
                 this.updateCurrentNotebook(notebookID)
                 this.getNoteList(notebookID)
             }else {

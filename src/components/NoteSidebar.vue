@@ -3,7 +3,7 @@
 		<span class="button add-note">添加笔记</span>
 		<el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
 			<span class="el-dropdown-link">
-				我的笔记本1
+				{{currentNotebook.title}}
 				<i class="el-icon-arrow-down el-icon--right"></i>
 			</span>
 			<el-dropdown-menu slot="dropdown">
@@ -23,7 +23,7 @@
 
 		<ul class="notes">
 			<li v-for="(note, index) in noteList" :key="index">
-				<router-link :to="`/note?noteID=${note.id}`">
+				<router-link :to="`/notedetail?notebookID=${currentNotebook.id}&noteID=${note.id}`">
 					<span class="date">{{note.updatedAtDate}}</span>
 					<span class="title">{{note.title}}</span>
 				</router-link>
@@ -39,24 +39,43 @@ import Note from '@/apis/notedetail'
 export default {
     name: 'NoteSidebar',
     created() {
-        Notebook.getAll()
-            .then(response => {
-                this.notebookList = response.data
-            })
+        this.getNotebookList()
     },
 	data() {
 		return {
 			notebookList: [],
-			noteList: []
+			noteList: [],
+            currentNotebook: {}
 		}
 	},
 	methods: {
+        getNotebookList() {
+            Notebook.getAll()
+                .then(response => {
+                    this.notebookList = response.data
+                    let currentNotebookID = parseInt(this.$route.query.notebookID)
+                    this.updateCurrentNotebook(currentNotebookID)
+                    this.getNoteList(currentNotebookID)
+                })
+        },
+        getNoteList(notebookID) {
+            Note.getAll({notebookID})
+                .then(response => {
+                    this.noteList = response.data
+                })
+        },
+        updateCurrentNotebook(id) {
+            this.currentNotebook = this.notebookList.find(notebook => notebook.id === id)
+                || this.notebookList[0] || {title: '我的笔记本'}
+        },
 		handleCommand(notebookID) {
             if (notebookID !== 'trash') {
-                Note.getAll({notebookID})
-                    .then(response => {
-                        this.noteList = response.data
-                    })
+                this.updateCurrentNotebook(notebookID)
+                this.getNoteList(notebookID)
+            }else {
+                this.$router.push({
+                    path: '/trash'
+                })
             }
         }
 	}

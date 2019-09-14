@@ -62,6 +62,7 @@ export default {
             Note.getAll({notebookID})
                 .then(response => {
                     this.noteList = response.data
+                    this.$emit('update:notes', this.noteList)
                 })
         },
         updateCurrentNotebook(id) {

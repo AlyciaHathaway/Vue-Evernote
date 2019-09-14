@@ -1,10 +1,10 @@
 <template>
 	<div class="detail" id="notebook">
-		<note-sidebar></note-sidebar>
+		<note-sidebar @update:notes="value => noteList = value"></note-sidebar>
 		<div class="note-detail">
 			<div class="note-bar">
-				<p>创建日期: {{currentNote.createdAtFormat}}</p>
-				<p>更新日期: {{currentNote.updatedAtFormat}}</p>
+				<p>创建日期: {{currentNote.createdAtDate}}</p>
+				<p>更新日期: {{currentNote.updatedAtDate}}</p>
 				<p class="save">{{currentNote.statusText}}</p>
                 <div class="operate">
                     <g-icon class="icon" name="trash"></g-icon>
@@ -12,7 +12,7 @@
                 </div>
 			</div>
 			<div class="note-title">
-                <input type="text" :value="currentNote.title" placeholder="请输入标题">
+                <input type="text" v-model="currentNote.title" placeholder="请输入标题">
             </div>
             <div class="editor">
                 <textarea v-show="true" :value="currentNote.content" placeholder="请输入内容，支持 Markdown 语法"></textarea>
@@ -34,10 +34,15 @@ export default {
 	},
 	data() {
 		return {
-            currentNote: {}
+            currentNote: {},
+            noteList: []
 		}
 	},
-	created() {}
+    created() {},
+    beforeRouteUpdate(to, from, next) {
+        this.currentNote = this.noteList.find(note => note.id === parseInt(to.query.noteID))
+        next()
+    }
 }
 </script>
 

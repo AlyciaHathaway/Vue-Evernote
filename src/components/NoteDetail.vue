@@ -2,22 +2,28 @@
 	<div class="detail" id="notebook">
 		<note-sidebar @update:notes="value => noteList = value"></note-sidebar>
 		<div class="note-detail">
-			<div class="note-bar">
-				<p>创建日期: {{currentNote.createdAtDate}}</p>
-				<p>更新日期: {{currentNote.updatedAtDate}}</p>
-				<p class="save">{{currentNote.statusText}}</p>
-                <div class="operate">
-                    <g-icon class="icon" name="trash"></g-icon>
-                    <g-icon class="icon" name="fullscreen"></g-icon>
+            <div class="note-empty" v-show="!currentNote">
+                请选择笔记
+            </div>
+            <template v-if="currentNote && currentNote.id">
+                <div class="note-bar">
+                    <p>创建日期: {{currentNote.createdAtDate}}</p>
+                    <p>更新日期: {{currentNote.updatedAtDate}}</p>
+                    <p class="save">{{currentNote.statusText}}</p>
+                    <div class="operate">
+                        <g-icon class="icon" name="trash"></g-icon>
+                        <g-icon class="icon" name="fullscreen"></g-icon>
+                    </div>
                 </div>
-			</div>
-			<div class="note-title">
-                <input type="text" v-model="currentNote.title" placeholder="请输入标题">
-            </div>
-            <div class="editor">
-                <textarea v-show="true" :value="currentNote.content" placeholder="请输入内容，支持 Markdown 语法"></textarea>
-                <div class="preview markdown-body" v-show="false"></div>
-            </div>
+                <div class="note-title">
+                    <input type="text" v-model="currentNote.title" placeholder="请输入标题">
+                </div>
+                <div class="editor">
+                    <textarea v-show="true" :value="currentNote.content" placeholder="内容区域，支持 Markdown 语法"></textarea>
+                    <div class="preview markdown-body" v-show="false"></div>
+                </div>
+            </template>
+			
 		</div>
 	</div>
 </template>
@@ -25,6 +31,7 @@
 <script>
 import NoteSidebar from '@/components/NoteSidebar'
 import Icon from '@/components/Icon'
+import Bus from '@/helpers/eventBus'
 
 export default {
 	name: 'Notebook',
@@ -38,7 +45,11 @@ export default {
             noteList: []
 		}
 	},
-    created() {},
+    created() {
+        Bus.$once('update:notes', value => {
+            this.currentNote = value.find(note => note.id === this.$route.query.noteID || {})
+        })
+    },
     beforeRouteUpdate(to, from, next) {
         this.currentNote = this.noteList.find(note => note.id === parseInt(to.query.noteID))
         next()

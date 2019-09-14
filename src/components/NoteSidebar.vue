@@ -35,6 +35,7 @@
 <script>
 import Notebook from '@/apis/notebook'
 import Note from '@/apis/notedetail'
+import Bus from '@/helpers/eventBus'
 
 export default {
     name: 'NoteSidebar',
@@ -63,6 +64,7 @@ export default {
                 .then(response => {
                     this.noteList = response.data
                     this.$emit('update:notes', this.noteList)
+                    Bus.$emit('update:notes', this.noteList)
                 })
         },
         updateCurrentNotebook(id) {

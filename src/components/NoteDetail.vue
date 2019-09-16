@@ -12,7 +12,7 @@
                         <div @click="deleteNote">
                             <g-icon class="icon" name="trash"></g-icon>
                         </div>
-						<div>
+						<div @click="isShowPreview = !isShowPreview">
                             <g-icon class="icon" name="fullscreen"></g-icon>
                         </div>
 					</div>
@@ -28,13 +28,13 @@
 				</div>
 				<div class="editor">
 					<textarea
-						v-show="true"
+						v-show="!isShowPreview"
 						v-model="currentNote.content"
 						@input="editingNote"
 						@keydown="editStatus='正在输入...'"
 						placeholder="内容区域，支持 Markdown 语法"
 					></textarea>
-					<div class="preview markdown-body" v-show="false"></div>
+					<div class="preview markdown-body" v-html="previewContent" v-show="isShowPreview"></div>
 				</div>
 			</template>
 		</div>
@@ -47,6 +47,8 @@ import Note from '@/apis/notedetail'
 import Icon from '@/components/Icon'
 import Bus from '@/helpers/eventBus'
 import _ from 'lodash'
+import MarkdownIt from 'markdown-it'
+let md = new MarkdownIt()
 
 export default {
 	name: 'Notebook',
@@ -58,7 +60,8 @@ export default {
 		return {
 			currentNote: {},
 			noteList: [],
-			editStatus: '笔记未改动'
+            editStatus: '笔记未改动',
+            isShowPreview: false
 		}
 	},
 	created() {
@@ -73,7 +76,12 @@ export default {
 			note => note.id === parseInt(to.query.noteID)
 		)
 		next()
-	},
+    },
+    computed: {
+        previewContent() {
+            return md.render(this.currentNote.content || '')
+        }
+    },
 	methods: {
 		editingNote: _.debounce(function() {
 			Note.updateNote(

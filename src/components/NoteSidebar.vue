@@ -54,7 +54,7 @@ export default {
             Notebook.getAll()
                 .then(response => {
                     this.notebookList = response.data
-                    let currentNotebookID = parseInt(this.$route.query.notebookID)
+                    let currentNotebookID = parseInt(this.$route.query.notebookID) || this.notebookList[0].id
                     this.updateCurrentNotebook(currentNotebookID)
                     this.getNoteList(currentNotebookID)
                 })

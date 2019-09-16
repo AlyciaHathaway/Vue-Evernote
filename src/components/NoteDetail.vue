@@ -9,8 +9,12 @@
 					<p>更新日期: {{currentNote.updatedAtDate}}</p>
 					<p class="save">{{editStatus}}</p>
 					<div class="operate">
-						<g-icon class="icon" name="trash"></g-icon>
-						<g-icon class="icon" name="fullscreen"></g-icon>
+                        <div @click="deleteNote">
+                            <g-icon class="icon" name="trash"></g-icon>
+                        </div>
+						<div>
+                            <g-icon class="icon" name="fullscreen"></g-icon>
+                        </div>
 					</div>
 				</div>
 				<div class="note-title">
@@ -85,7 +89,16 @@ export default {
 				.catch(error => {
 					this.editStatus = '保存失败'
 				})
-		}, 500)
+		}, 500),
+		deleteNote() {
+			Note.deleteNote({
+				noteID: this.currentNote.id
+			}).then(data => {
+                this.$message.success(data.msg)
+                this.noteList.splice(this.noteList.indexOf(this.currentNote), 1)
+                this.$router.replace({path: '/notedetail'})
+			})
+		}
 	}
 }
 </script>

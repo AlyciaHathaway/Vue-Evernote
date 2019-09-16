@@ -33,6 +33,15 @@ export default {
         return request(URL.DELETE.replace(':noteID', noteID), 'DELETE')
     },
     addNote({ notebookID }, { title = '', content = '' } = { title: '', content: '' }) {
-        return request(URL.ADD.replace(':notebookID', notebookID), 'POST', { title, content })
+        return new Promise((resolve, reject) => {
+            request(URL.ADD.replace(':notebookID', notebookID), 'POST', { title, content })
+                .then(response => {
+                    response.data.createdAtDate = dateFormat(response.data.createdAt)
+                    response.data.updatedAtDate = dateFormat(response.data.updatedAt)
+                    resolve(response)
+                }).catch(error => {
+                    reject(error)
+                })
+        })
     }
 }

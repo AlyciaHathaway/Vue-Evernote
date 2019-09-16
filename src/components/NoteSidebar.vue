@@ -1,6 +1,6 @@
 <template>
 	<div id="note-sidebar">
-		<span class="button add-note">添加笔记</span>
+		<span class="button add-note" @click="addNote">添加笔记</span>
 		<el-dropdown class="notebook-title" @command="handleCommand" placement="bottom">
 			<span class="el-dropdown-link">
 				{{currentNotebook.title}}
@@ -84,6 +84,13 @@ export default {
                     path: '/trash'
                 })
             }
+        },
+        addNote() {
+            Note.addNote({
+                notebookID: this.currentNotebook.id
+            }).then(response => {
+                this.noteList.unshift(response.data)
+            })
         }
 	}
 }
